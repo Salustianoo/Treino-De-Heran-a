@@ -1,0 +1,63 @@
+class Cofre:
+    def __init__(self,saldo):
+        self.saldo=saldo
+
+    
+    def __str__(self):
+        return f"{self.saldo} é o saldo"
+
+    def __add__(self,other):
+        total= self.saldo+other.saldo
+        return Cofre(total)
+    
+    @property
+    def saldo(self):
+        return self.__saldo
+    
+    @saldo.setter
+    def saldo(self,saldo):
+        if saldo <0:
+            raise ValueError("saldo invalido")
+        
+        self.__saldo = saldo
+    
+    @classmethod
+    def get(cls):
+        saldo= int(input("qual o valor? "))
+        return cls(saldo)
+    
+
+    def sacar(self,valor):
+        if valor > self.saldo:
+            raise ValueError("saldo insuficiente")
+        
+        self.saldo-=valor
+    
+    def transferir(self,destinatario,valor):
+        if valor > self.saldo:
+            raise ValueError("saldo insuficiente")
+        destinatario.saldo+=valor
+        self.saldo-=valor
+
+    
+    def depositar(self,valor):
+        if valor <=0:
+            raise ValueError("valor invalido")
+        self.saldo+=valor
+
+class CofrePremium(Cofre):
+    def __init__(self, saldo):
+        super().__init__(saldo)
+
+
+    @Cofre.saldo.setter
+    def saldo(self, saldo):
+        if saldo <-100:
+            raise ValueError("valor invalido")
+        self._Cofre__saldo = saldo 
+
+    def sacar(self,valor):
+        if self.saldo - valor < -100:
+            raise ValueError("saldo insuficiente")
+        
+        self.saldo-=valor
